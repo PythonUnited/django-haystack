@@ -6,7 +6,12 @@ import time
 from threading import Thread
 
 from django import forms
-from django.core.urlresolvers import reverse
+import django
+if django.VERSION < (1, 10):
+    from django.core.urlresolvers import reverse
+else:
+    from django.urls import reverse
+from django.http import HttpRequest, QueryDict		  
 from django.http import HttpRequest, QueryDict
 from django.test import TestCase, override_settings
 from django.utils.six.moves import queue

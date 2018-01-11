@@ -524,7 +524,9 @@ class SolrSearchBackend(BaseSearchBackend):
                                 spelling_suggestions.append(i)
             else:
                 # Legacy Solr
-                spelling_suggestions.append(suggestions[-1])
+                #MJB
+                if 'correctlySpelled' not in suggestions:
+                    spelling_suggestions.append(suggestions[-1])
 
         return spelling_suggestions
 

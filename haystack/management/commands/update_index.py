@@ -1,5 +1,5 @@
 # encoding: utf-8
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 
 import logging
 import multiprocessing
@@ -36,7 +36,7 @@ def update_worker(args):
     # will try to share the connection, which causes things to blow up.
     from django.db import connections
 
-    for alias, info in connections.databases.items():
+    for alias, info in list(connections.databases.items()):
         # We need to also tread lightly with SQLite, because blindly wiping
         # out connections (via ``... = {}``) destroys in-memory DBs.
         if 'sqlite3' not in info['ENGINE']:
@@ -193,7 +193,7 @@ class Command(BaseCommand):
 
         self.backends = options.get('using')
         if not self.backends:
-            self.backends = haystack_connections.connections_info.keys()
+            self.backends = list(haystack_connections.connections_info.keys())
 
         age = options.get('age', DEFAULT_AGE)
         start_date = options.get('start_date')
@@ -256,7 +256,7 @@ class Command(BaseCommand):
             total = qs.count()
 
             if self.verbosity >= 1:
-                self.stdout.write(u"Indexing %d %s" % (
+                self.stdout.write("Indexing %d %s" % (
                     total, force_text(model._meta.verbose_name_plural))
                 )
 
